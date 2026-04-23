@@ -883,7 +883,7 @@
       </a-assets>
 
       
-      <a-sound src="#musica" autoplay="true" loop="true" positional="false"></a-sound>
+      <a-sound src="#musica" autoplay="true" loop="true" positional="false" volume="50"></a-sound>
      
       <a-sky src="#sky" radius="3000"></a-sky>
       <a-entity gltf-model="#earth" position="0 0 0" scale="2 2 2" animation="property:rotation; from:0 0 0; to:0 360 0; loop:true; dur:10000; easing:linear">
@@ -915,6 +915,23 @@
                 rotation="0 0 90" 
                 animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
             </a-cylinder>
+
+            <a-cylinder src="#rueda" 
+                height="0.15" 
+                radius="0.075" 
+                position="0.23 -0.57 -1.69" 
+                rotation="0 0 90" 
+                animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
+            </a-cylinder>
+            
+            <a-cylinder src="#rueda" 
+                height="0.15" 
+                radius="0.075" 
+                position="-0.23 -0.57 -1.7" 
+                rotation="0 0 90" 
+                animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
+            </a-cylinder>
+            
             
           </a-camera>
           
