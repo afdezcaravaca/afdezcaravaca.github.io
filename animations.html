@@ -877,8 +877,9 @@
         <a-asset-item id="jupyter" src="./Assets/jupiter/scene.gltf"></a-asset-item>
         <a-asset-item id="saturno" src="./Assets/realistic_saturn_8k/scene.gltf"></a-asset-item>
         <a-asset-item id="neptuno" src="./Assets/neptuno/scene.gltf"></a-asset-item>
-        <a-asset-item id="coche" src="./Assets/go_kart/scene.gltf"></a-asset-item>
+        <a-asset-item id="coche" src="./Assets/3ds_-_nintendogs_cats_-_yoshi_kart/scene.gltf"></a-asset-item>
         <audio id="musica" src="./Assets/music.mp3" preload="auto"></audio>
+        <a-asset-item id="mario" src="./Assets/mario.glb"></a-asset-item>
       </a-assets>
 
       
@@ -893,24 +894,24 @@
           
           <a-camera id="player-camera" wasd-controls="acceleration:70;" 
                     look-controls="pointerLockEnabled: true"
-                    lock-pitch="margin:45"
-                    position="0 0 0"
+                    lock-pitch="margin:5"
+                    position="0 -4 0"
                     snap-to-mesh="target: #circuito-fisico; offset: 0.7; rayHeight: 2">
             
-            <a-entity gltf-model="#coche" scale="0.005 0.005 0.005" position="0 -0.5 -0" rotation="0 180 0"></a-entity>
+            <a-entity gltf-model="#coche" scale="0.5 0.5 0.5" position="0 -0.7 -2" rotation="0 180 0"></a-entity>
             
             <a-cylinder src="#rueda" 
-                height="0.25" 
+                height="0.15" 
                 radius="0.11" 
-                position="-0.32 -0.45 -0.57" 
+                position="-0.25 -0.55 -1.67" 
                 rotation="0 0 90" 
                 animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
             </a-cylinder>
             
             <a-cylinder src="#rueda" 
-                height="0.25" 
+                height="0.15" 
                 radius="0.11" 
-                position="0.37 -0.45 -0.57" 
+                position="0.25 -0.55 -1.67" 
                 rotation="0 0 90" 
                 animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
             </a-cylinder>
@@ -927,8 +928,8 @@
                   snap-to-mesh="target: #circuito-fisico; offset: 0.8; rayHeight: 2">
 
           <a-entity id="ai-coche"
-                    gltf-model="#coche"
-                    scale="0.005 0.005 0.005"
+                    gltf-model="#mario"
+                    scale="0.45 0.45 0.45"
                     position="0 -0.5 0"
                     rotation="0 0 0">
           </a-entity>
