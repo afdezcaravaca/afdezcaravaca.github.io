@@ -878,10 +878,12 @@
         <a-asset-item id="saturno" src="./Assets/realistic_saturn_8k/scene.gltf"></a-asset-item>
         <a-asset-item id="neptuno" src="./Assets/neptuno/scene.gltf"></a-asset-item>
         <a-asset-item id="coche" src="./Assets/go_kart/scene.gltf"></a-asset-item>
-        
+        <audio id="musica" src="./Assets/music.mp3" preload="auto"></audio>
       </a-assets>
 
       
+      <a-sound src="#musica" autoplay="true" loop="true" positional="false"></a-sound>
+     
       <a-sky src="#sky" radius="3000"></a-sky>
       <a-entity gltf-model="#earth" position="0 0 0" scale="2 2 2" animation="property:rotation; from:0 0 0; to:0 360 0; loop:true; dur:10000; easing:linear">
       
@@ -921,7 +923,7 @@
         <a-entity id="ai-rig"
                   position="10.5 51.5 -20"
                   rotation="0 180 0"
-                  waypoint-follower="speed: 13.1w; threshold: 2; lapsToWin: 1"
+                  waypoint-follower="speed: 13.15; threshold: 2; lapsToWin: 1"
                   snap-to-mesh="target: #circuito-fisico; offset: 0.8; rayHeight: 2">
 
           <a-entity id="ai-coche"
