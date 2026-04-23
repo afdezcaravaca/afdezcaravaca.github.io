@@ -845,6 +845,63 @@
       });
     }
   });
+
+      AFRAME.registerComponent('vr-locomotion', {
+        schema: {
+          speed:       { type: 'number', default: 8 },
+          deadzone:    { type: 'number', default: 0.2 },
+          rotateSpeed: { type: 'number', default: 60 }  // grados/segundo con thumbstick derecho
+        },
+
+        init: function () {
+          this._moveVec   = new THREE.Vector3();
+          this._camDir    = new THREE.Vector3();
+          this._camQuat   = new THREE.Quaternion();
+          this._leftAxes  = [0, 0];
+          this._rightAxes = [0, 0];
+
+          // Escucha los ejes del thumbstick izquierdo (locomoción)
+          this.el.addEventListener('axismove', (evt) => {
+            const hand = evt.target.getAttribute('oculus-touch-controls')?.hand;
+            if (hand === 'left')  this._leftAxes  = [evt.detail.axis[2], evt.detail.axis[3]];
+            if (hand === 'right') this._rightAxes = [evt.detail.axis[2], evt.detail.axis[3]];
+          });
+        },
+
+        tick: function (time, delta) {
+          const dt = delta / 1000;
+          const dz = this.applyDeadzone(this._leftAxes[0] ?? 0);
+          const dx = this.applyDeadzone(this._leftAxes[1] ?? 0);
+
+          // Rotación con thumbstick derecho
+          const rx = this.applyDeadzone(this._rightAxes[0] ?? 0);
+          if (rx !== 0) {
+            this.el.object3D.rotation.y -= THREE.MathUtils.degToRad(rx * this.data.rotateSpeed * dt);
+          }
+
+          if (dx === 0 && dz === 0) return;
+
+          // Dirección: hacia donde mira la cámara proyectada en XZ
+          const cam = this.el.querySelector('[camera]');
+          if (!cam) return;
+          cam.object3D.getWorldQuaternion(this._camQuat);
+          this._camDir.set(0, 0, -1).applyQuaternion(this._camQuat);
+          this._camDir.y = 0;
+          this._camDir.normalize();
+
+          const right = new THREE.Vector3().crossVectors(this._camDir, new THREE.Vector3(0,1,0));
+
+          this._moveVec
+            .copy(this._camDir).multiplyScalar(-dz * this.data.speed * dt)
+            .addScaledVector(right, dx * this.data.speed * dt);
+
+          this.el.object3D.position.add(this._moveVec);
+        },
+
+        applyDeadzone: function (val) {
+          return Math.abs(val) < this.data.deadzone ? 0 : val;
+        }
+      });
     </script>
   </head>
     
@@ -898,12 +955,12 @@
                     position="0 -4 0"
                     snap-to-mesh="target: #circuito-fisico; offset: 0.7; rayHeight: 2">
             
-            <a-entity gltf-model="#coche" scale="0.5 0.5 0.5" position="0 -0.7 -1.5" rotation="0 180 0"></a-entity>
+            <a-entity gltf-model="#coche" scale="0.5 0.5 0.5" position="0 -0.7 -2" rotation="0 180 0"></a-entity>
             
             <a-cylinder src="#rueda" 
                 height="0.15" 
                 radius="0.11" 
-                position="-0.23 -0.57 -1.29" 
+                position="-0.25 -0.55 -1.67" 
                 rotation="0 0 90" 
                 animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
             </a-cylinder>
@@ -911,13 +968,15 @@
             <a-cylinder src="#rueda" 
                 height="0.15" 
                 radius="0.11" 
-                position="0.23 -0.57 -1.29" 
+                position="0.25 -0.55 -1.67" 
                 rotation="0 0 90" 
                 animation="property: rotation; from: 0 0 90; to: -360 0 90; loop: true; dur: 800; easing: linear">
             </a-cylinder>
             
           </a-camera>
-          
+          <a-entity id="left-controller"  oculus-touch-controls="hand: left"></a-entity>
+          <a-entity id="right-controller" oculus-touch-controls="hand: right"></a-entity>
+
         </a-entity>
 
         <!-- Coche AI autónomo -->
